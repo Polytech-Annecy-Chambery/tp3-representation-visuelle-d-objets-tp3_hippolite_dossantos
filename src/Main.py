@@ -43,9 +43,9 @@ def Q4a():
     # Ecriture en utilisant des variables : A compléter
     wall1 = Wall({'width': 8, 'height': 2.5, 'orientation': 90, 'thickness': 0.6, 'color': [1, 0.74, 0.46]})
     wall2 = Wall({'width': 4, 'height': 2.5, 'orientation': 0, 'thickness': 0.6, 'color': [1, 0.74, 0.46]})
-    wall3 = Wall({'position': [8, 0, 0], 'width': 8, 'height': 2.5, 'orientation': 0, 'thickness': 0.6, 'color': [1, 0.74, 0.46]})
-    wall4 =  Wall({'position': [8, 0, 0], 'width': 4, 'height': 2.5, 'orientation': 90, 'thickness': 0, 'color': [1, 0.74, 0.46]})  
-    house = House({'position': [0, 0, 0], 'orientation':0})
+    wall3 = Wall({'position': [0, 7.4, 0], 'width': 4, 'height': 2.5, 'orientation': 0, 'thickness': 0.6, 'color': [1, 0.74, 0.46]})
+    wall4 =  Wall({'position': [0, -4.6, 0], 'width': 8, 'height': 2.5, 'orientation': 90, 'thickness': 0.6, 'color': [1, 0.74, 0.46]})  
+    house = House({'position': [-3, 1, 0], 'orientation':0})
     house.add(wall1).add(wall3).add(wall4).add(wall2)
     return Configuration().add(house)   
     

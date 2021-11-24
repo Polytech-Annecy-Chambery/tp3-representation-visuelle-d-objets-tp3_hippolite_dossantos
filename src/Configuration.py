@@ -141,8 +141,11 @@ class Configuration:
         if self.event.dict['unicode'] == 'Z' or (self.event.mod & pygame.KMOD_SHIFT and self.event.key == pygame.K_z):
             gl.glRotate(-2.5, 0, 0, 1)                     
         elif self.event.dict['unicode'] == 'z' or self.event.key == pygame.K_z:
-            gl.glRotate(2.5, 0, 0, 1) 
-        
+            gl.glRotate(2.5, 0, 0, 1)
+        elif self.event.key == pygame.K_PAGEUP:
+            gl.glScaled(1.1, 1.1, 1.1);
+        elif self.event.key == pygame.K_PAGEDOWN:
+            gl.glScaled(0.9, 0.9, 0.9);
         # Draws or suppresses the reference frame
         elif self.event.dict['unicode'] == 'a' or self.event.key == pygame.K_a:
             self.parameters['axes'] = not self.parameters['axes']
@@ -150,11 +153,18 @@ class Configuration:
     
     # Processes the MOUSEBUTTONDOWN event
     def processMouseButtonDownEvent(self):
-        pass
+        if self.event.type == pygame.MOUSEBUTTONDOWN and self.event.button == 4: # wheel rolled up
+            gl.glScaled(1.1, 1.1, 1.1);
+        elif self.event.type == pygame.MOUSEBUTTONDOWN and self.event.button == 5: # wheel rolled down
+            gl.glScaled(0.9, 0.9, 0.9);
     
     # Processes the MOUSEMOTION event
     def processMouseMotionEvent(self):
-        pass
+        if pygame.mouse.get_pressed()[0] == 1:
+            gl.glRotate(self.event.rel[0], 1, 0, 0)
+            gl.glRotate(self.event.rel[1], 0, 0, 1)
+        elif pygame.mouse.get_pressed()[2] == 1:
+            gl.glTranslatef(self.event.rel[0]/100, 0, self.event.rel[1]/100)
          
     # Displays on screen and processes events    
     def display(self): 
@@ -175,7 +185,7 @@ class Configuration:
             # Processes the event
             
             # Quit pygame (compatibility with pygame1.9.6 and 2.0.0)
-            if self.event.type == pygame.QUIT: #or (self.event.type == pygame.WINDOWEVENT and pygame.event.wait(100).type == pygame.QUIT):
+            if self.event.type == pygame.QUIT or (self.event.type == pygame.WINDOWEVENT and pygame.event.wait(100).type == pygame.QUIT):
                 pygame.quit()
                 break  
 
@@ -193,3 +203,4 @@ class Configuration:
             self.draw()
             pygame.event.clear()
             pygame.display.flip()
+

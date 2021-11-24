@@ -42,4 +42,7 @@ class House:
     # Draws the house      
     def draw(self):  
         # A compléter en remplaçant pass par votre code
-        pass        
+        gl.glPushMatrix()
+        for x in self.objects:
+            x.draw()
+        gl.glPopMatrix()        

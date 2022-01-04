@@ -158,6 +158,8 @@ class Section:
     # Draws the faces
     def draw(self):
         gl.glPushMatrix()
+        gl.glRotatef(self.parameters['orientation'], 0, 0, 1)
+        #gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], self.parameters['position'][2]) mis en commentaires car cela "explose" les murs et disperse des morceaux de murs
         if self.parameters['edges'] == True:
             self.drawEdges()
         for i in self.faces:

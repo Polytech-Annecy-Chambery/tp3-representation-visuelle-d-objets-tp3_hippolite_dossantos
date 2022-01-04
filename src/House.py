@@ -43,6 +43,7 @@ class House:
     def draw(self):  
         # A compléter en remplaçant pass par votre code
         gl.glPushMatrix()
+        gl.glTranslatef(self.parameters['position'][0], self.parameters['position'][1], self.parameters['position'][2])
         for x in self.objects:
             x.draw()
         gl.glPopMatrix()        

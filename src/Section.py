@@ -74,13 +74,72 @@ class Section:
 
     # Checks if the opening can be created for the object x
     def canCreateOpening(self, x):
-        # A compléter en remplaçant pass par votre code
-        pass      
-        
+        if x.getParameter("position")[0] + x.getParameter("width") > self.parameters["position"][0] + self.parameters["width"]:
+            return False
+        elif x.getParameter("position")[0]< self.parameters["position"][0] :
+            return False
+        elif x.getParameter("position")[2] + x.getParameter("height") > self.parameters["position"][2] + self.parameters["height"]:
+            return False
+        elif x.getParameter("position")[2] < self.parameters["position"][2]:
+            return False  
+        return True
+            
     # Creates the new sections for the object x
     def createNewSections(self, x):
-        # A compléter en remplaçant pass par votre code
-        pass              
+        section = []
+        
+        section1 = Section({
+                "position": self.parameters["position"], 
+                "width": x.getParameter("position")[0], 
+                "height": self.parameters["height"], 
+                "thickness": self.parameters["thickness"], 
+                "color" : self.parameters["color"], 
+                "edges": self.parameters['edges'], 
+                "orientation": self.parameters["orientation"]})
+        
+        section2 = Section({
+                "position": [self.parameters["position"][0] + section1.parameters["width"], self.parameters["position"][1], self.parameters["position"][2] + x.getParameter("position")[2]+x.getParameter("height")],
+                "width":        x.getParameter("width"), 
+                "height":       self.parameters["height"]-x.getParameter("height")-(x.getParameter("position")[2]-self.parameters["position"][2]),
+                "thickness":    self.parameters["thickness"],
+                "color" :       self.parameters["color"],
+                "edges":        self.parameters['edges'],
+                "orientation":  self.parameters["orientation"]
+            })
+    
+        section3 = Section({
+                "position": [self.parameters["position"][0] +    section1.parameters["width"], self.parameters["position"][1], self.parameters["position"][2]],
+                "width":        x.getParameter("width"),
+                "height":       self.parameters["height"]-x.getParameter("height")-section2.parameters["height"],
+                "thickness":    self.parameters["thickness"],
+                "color" :       self.parameters["color"],
+                "edges":        self.parameters['edges'],
+                "orientation":  self.parameters["orientation"]
+            })
+    
+        section4 = Section({
+                "position":[self.parameters["position"][0] + section1.parameters["width"]+x.getParameter("width"), self.parameters["position"][1], self.parameters["position"][2]],
+                "width":        self.parameters["width"]-section1.parameters["width"]-x.getParameter("width"),
+                "height":       self.parameters["height"],
+                "thickness":    self.parameters["thickness"],
+                "color" :       self.parameters["color"],
+                "edges":        self.parameters['edges'],
+                "orientation":  self.parameters["orientation"]
+            })
+    
+        if section1.parameters["width"] > 0 : 
+            section.append(section1)        
+    
+        if section2.parameters["height"] > 0 : 
+            section.append(section2)
+
+        if section3.parameters["height"] > 0 : 
+            section.append(section3)
+            
+        if section4.parameters["width"] > 0 : 
+            section.append(section4)
+        
+        return section             
         
     # Draws the edges
     def drawEdges(self):
@@ -104,7 +163,7 @@ class Section:
         for i in self.faces:
             gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL) # on trace les faces : GL_FILL
             gl.glBegin(gl.GL_QUADS) # Tracé d’un quadrilatère
-            gl.glColor3fv(self.parameters['color']) # Couleur gris moyen
+            gl.glColor3fv(self.parameters['color']) # Couleur gris moyen                   
             gl.glVertex3fv(self.vertices[i[0]])
             gl.glVertex3fv(self.vertices[i[1]])
             gl.glVertex3fv(self.vertices[i[2]])

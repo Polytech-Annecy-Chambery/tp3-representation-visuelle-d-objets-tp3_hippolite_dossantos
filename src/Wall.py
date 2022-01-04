@@ -6,6 +6,7 @@ Created on Thu Nov 16 19:47:50 2017
 """
 import OpenGL.GL as gl
 from Section import Section
+from copy import deepcopy
 
 class Wall:
     # Constructor
@@ -63,8 +64,15 @@ class Wall:
     
     # Adds an object    
     def add(self, x):    
-        # A compléter en remplaçant pass par votre code
-        pass        
+        sections = self.findSection(x)
+        positionRelative = [x.parameters["position"][0] - (sections[1].getParameter("position")[0]), x.parameters["position"][1] - (sections[1].getParameter("position")[1]), x.parameters["position"][2] - (sections[1].getParameter("position")[2])]
+        relative = deepcopy(x)
+        relative.setParameter("position", positionRelative)
+        newSections = sections[1].createNewSections(relative)
+        self.objects.pop(sections[0])
+        self.objects.append(x)
+        for i in newSections:
+            self.objects.append(i)    
                     
     # Draws the faces
     def draw(self):
